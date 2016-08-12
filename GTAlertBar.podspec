@@ -6,6 +6,7 @@ Pod::Spec.new do |s|
 
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
   s.author       = { "Ian Spence" => "ian@ecnepsnai.com" }
+  s.social_media_url = 'https://twitter.com/ecnepsnai'
   s.source       = {
     :git => "https://github.com/ecnepsnai/GTAlertBar.git",
     :tag => "v1.0.0"
