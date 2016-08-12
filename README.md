@@ -2,6 +2,8 @@
 
 A no-nonsense manager for showing alert bars on iOS apps.
 
+<img src="http://i.imgur.com/Dh6VGyg.gif" />
+
 Are you tired of dealing with terrible alert bar managers that lock you into
 fixed colors, don't let you change images, or ever let you dismiss the bars
 progmatically?
