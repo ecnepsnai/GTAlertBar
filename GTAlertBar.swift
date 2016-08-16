@@ -40,18 +40,36 @@ public class GTAlertBarSize: NSObject {
     public var padding: CGFloat = 5
 }
 
+public class GTAlertBarCallbacks: NSObject {
+    /// Called when the user tapped on the bar. The "tapToDismiss" setting has no affect on this callback.
+    /// - parameter: bar The alert bar instance
+    public var userTappedOnBar: ((bar: GTAlertBar) -> (Void))?
+    
+    /// Called when the bar was presented, after any aminations have completed
+    /// - parameter: bar The alert bar instance
+    public var barPresented: ((bar: GTAlertBar) -> (Void))?
+    
+    /// Called when the bar was dismissed, after any animations have completed
+    /// - parameter: bar The alert bar instance
+    /// - parameter: userDismissed True if the bar was dismissed by the user
+    public var barDismissed: ((bar: GTAlertBar, userDismissed: Bool) -> (Void))?
+}
+
 public class GTAlertBarOptions: NSObject {
     /// Color properties.
     public var colors: GTAlertBarColors = GTAlertBarColors()
 
     /// Animation properties.
     public var animation: GTAlertBarAnimations = GTAlertBarAnimations()
+    
+    /// Size properties.
+    public var size: GTAlertBarSize = GTAlertBarSize()
+    
+    /// Callbacks
+    public var callbacks: GTAlertBarCallbacks = GTAlertBarCallbacks()
 
     /// Optional image for the bar. Specify your own image or use any of the included images in GTAlertBar.
     public var image: UIImage?
-
-    /// Size properties.
-    public var size: GTAlertBarSize = GTAlertBarSize()
 
     /// Dismiss bar automatically after this amount of seconds. Set to 0.0 to never dismiss.
     public var dismissAfter: NSTimeInterval = 2.0
@@ -178,13 +196,13 @@ public class GTAlertBar: NSObject {
     public class func removeAllBarsFromViewController(controller: UIViewController) {
         if let barsForView = GTAlertBar.bars[controller] {
             for bar in barsForView {
-                bar.removeFromParentView()
+                bar.removeFromParentView(false)
             }
         }
     }
 
     /// Remove this bar from its parents view
-    func removeFromParentView() {
+    func removeFromParentView(userInitiated: Bool) {
         var indexOfRemovedBar: Int = 0
         if let barsForView = GTAlertBar.bars[self.parentViewController] {
             indexOfRemovedBar = barsForView.indexOfObject(self)
@@ -203,6 +221,7 @@ public class GTAlertBar: NSObject {
                 self.view.layer.opacity = 0.0
             }
         }) { (Bool) in
+            self.options.callbacks.barDismissed?(bar: self, userDismissed: userInitiated)
             self.view.removeFromSuperview()
         }
     }
@@ -229,13 +248,20 @@ public class GTAlertBar: NSObject {
                 self.view.layer.opacity = 1.0
             }
             }) { (finished) in
-                if self.options.tapToDismiss {
-                    self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.removeFromParentView)))
-                }
+                self.options.callbacks.barPresented?(bar: self)
+                self.view.addGestureRecognizer(UITapGestureRecognizer(target: self,
+                    action: #selector(self.userTappedOnBar)))
                 if self.options.dismissAfter != 0.0 {
                     self.performSelector(#selector(self.removeFromParentView),
                                          withObject: nil, afterDelay: self.options.dismissAfter)
                 }
+        }
+    }
+    
+    @objc private func userTappedOnBar() {
+        self.options.callbacks.userTappedOnBar?(bar: self)
+        if self.options.tapToDismiss {
+            self.removeFromParentView(true)
         }
     }
 
