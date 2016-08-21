@@ -1,110 +1,110 @@
 import UIKit
 import QuartzCore
 
-public class GTAlertBarColors: NSObject {
+open class GTAlertBarColors: NSObject {
     /// The background color of the alert bar.
-    public var background: UIColor = UIColor.blackColor()
+    open var background: UIColor = UIColor.black
 
     /// The opacity amount for the background color.
-    public var backgroundOpacity: CGFloat = 0.85
+    open var backgroundOpacity: CGFloat = 0.85
 
     /// The image tint color.
-    public var image: UIColor = UIColor.whiteColor()
+    open var image: UIColor = UIColor.white
 
     /// The title label color.
-    public var title: UIColor = UIColor.whiteColor()
+    open var title: UIColor = UIColor.white
 
     /// The body label color.
-    public var body: UIColor = UIColor.whiteColor()
+    open var body: UIColor = UIColor.white
 }
 
-public class GTAlertBarAnimations: NSObject {
+open class GTAlertBarAnimations: NSObject {
     /// Should the view slide down & up
-    public var enabled: Bool = true
+    open var enabled: Bool = true
 
     /// Should the view fade in & out
-    public var fade: Bool = false
+    open var fade: Bool = false
 
     /// Duration of the animations
-    public var duration: NSTimeInterval = 0.2
+    open var duration: TimeInterval = 0.2
 }
 
-public class GTAlertBarSize: NSObject {
+open class GTAlertBarSize: NSObject {
     /// The base height of the view. Will grow based off of the padding amount.
-    public var baseHeight: CGFloat = 50.0
+    open var baseHeight: CGFloat = 50.0
 
     /// The width of the view. Will use the width of the parent view if not specified.
-    public var width: CGFloat?
+    open var width: CGFloat?
 
     /// The amount of padding between elements.
-    public var padding: CGFloat = 5
+    open var padding: CGFloat = 5
 }
 
-public class GTAlertBarCallbacks: NSObject {
+open class GTAlertBarCallbacks: NSObject {
     /// Called when the user tapped on the bar. The "tapToDismiss" setting has no affect on this callback.
     /// - parameter: bar The alert bar instance
-    public var userTappedOnBar: ((bar: GTAlertBar) -> (Void))?
+    open var userTappedOnBar: ((_ bar: GTAlertBar) -> (Void))?
     
     /// Called when the bar was presented, after any aminations have completed
     /// - parameter: bar The alert bar instance
-    public var barPresented: ((bar: GTAlertBar) -> (Void))?
+    open var barPresented: ((_ bar: GTAlertBar) -> (Void))?
     
     /// Called when the bar was dismissed, after any animations have completed
     /// - parameter: bar The alert bar instance
     /// - parameter: userDismissed True if the bar was dismissed by the user
-    public var barDismissed: ((bar: GTAlertBar, userDismissed: Bool) -> (Void))?
+    open var barDismissed: ((_ bar: GTAlertBar, _ userDismissed: Bool) -> (Void))?
 }
 
-public class GTAlertBarOptions: NSObject {
+open class GTAlertBarOptions: NSObject {
     /// Color properties.
-    public var colors: GTAlertBarColors = GTAlertBarColors()
+    open var colors: GTAlertBarColors = GTAlertBarColors()
 
     /// Animation properties.
-    public var animation: GTAlertBarAnimations = GTAlertBarAnimations()
+    open var animation: GTAlertBarAnimations = GTAlertBarAnimations()
     
     /// Size properties.
-    public var size: GTAlertBarSize = GTAlertBarSize()
+    open var size: GTAlertBarSize = GTAlertBarSize()
     
     /// Callbacks
-    public var callbacks: GTAlertBarCallbacks = GTAlertBarCallbacks()
+    open var callbacks: GTAlertBarCallbacks = GTAlertBarCallbacks()
 
     /// Optional image for the bar. Specify your own image or use any of the included images in GTAlertBar.
-    public var image: UIImage?
+    open var image: UIImage?
 
     /// Dismiss bar automatically after this amount of seconds. Set to 0.0 to never dismiss.
-    public var dismissAfter: NSTimeInterval = 2.0
+    open var dismissAfter: TimeInterval = 2.0
 
     /// Dismiss bar if user taps on it.
-    public var tapToDismiss: Bool = true
+    open var tapToDismiss: Bool = true
 }
 
-public class GTAlertBarImage: NSObject {
-    public static let exclamation: UIImage = {
+open class GTAlertBarImage: NSObject {
+    open static let exclamation: UIImage = {
         return UIImage(named: "fa-exclamation",
-                       inBundle: NSBundle(forClass: GTAlertBar.self),
-                       compatibleWithTraitCollection: nil)!
+                       in: Bundle(for: GTAlertBar.self),
+                       compatibleWith: nil)!
     }()
     
-    public static let info: UIImage = {
+    open static let info: UIImage = {
         return UIImage(named: "fa-info",
-                       inBundle: NSBundle(forClass: GTAlertBar.self),
-                       compatibleWithTraitCollection: nil)!
+                       in: Bundle(for: GTAlertBar.self),
+                       compatibleWith: nil)!
     }()
     
-    public static let caution: UIImage = {
+    open static let caution: UIImage = {
         return UIImage(named: "fa-times-circle",
-                       inBundle: NSBundle(forClass: GTAlertBar.self),
-                       compatibleWithTraitCollection: nil)!
+                       in: Bundle(for: GTAlertBar.self),
+                       compatibleWith: nil)!
     }()
     
-    public static let check: UIImage = {
+    open static let check: UIImage = {
         return UIImage(named: "fa-check",
-                       inBundle: NSBundle(forClass: GTAlertBar.self),
-                       compatibleWithTraitCollection: nil)!
+                       in: Bundle(for: GTAlertBar.self),
+                       compatibleWith: nil)!
     }()
 }
 
-public class GTAlertBar: NSObject {
+open class GTAlertBar: NSObject {
     static var bars: [UIViewController:NSMutableArray] = [:]
 
     var options: GTAlertBarOptions!
@@ -119,7 +119,7 @@ public class GTAlertBar: NSObject {
     ///  - parameter options:        Alert options
     ///
     ///  - returns: The GTAlertBar instance
-    public class func barAttachedToView(viewController: UIViewController!,
+    open class func barAttachedToView(_ viewController: UIViewController!,
                                  title: String!,
                                  body: String?,
                                  options: GTAlertBarOptions!) -> GTAlertBar {
@@ -136,7 +136,7 @@ public class GTAlertBar: NSObject {
             height: alertBarInstance.options.size.baseHeight))
         alertBarInstance.parentViewController = viewController
 
-        alertBarInstance.view.backgroundColor = options.colors.background.colorWithAlphaComponent(
+        alertBarInstance.view.backgroundColor = options.colors.background.withAlphaComponent(
             options.colors.backgroundOpacity)
         alertBarInstance.view.layer.opacity = options.animation.fade ? 0.0 : 1.0
 
@@ -163,7 +163,7 @@ public class GTAlertBar: NSObject {
             height: 0))
         titleLabel.text = title
         titleLabel.textColor = options.colors.title
-        titleLabel.font = UIFont.boldSystemFontOfSize(titleLabel.font.pointSize)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: titleLabel.font.pointSize)
         titleLabel.sizeToFit()
         alertBarInstance.view.addSubview(titleLabel)
 
@@ -183,7 +183,7 @@ public class GTAlertBar: NSObject {
             titleLabel.frame = frame
         }
 
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             alertBarInstance.addToParentView()
         }
 
@@ -193,22 +193,22 @@ public class GTAlertBar: NSObject {
     ///  Remove all bars currently visible in the specified view controller
     ///
     ///  - parameter controller: The view controller to remove all bars from
-    public class func removeAllBarsFromViewController(controller: UIViewController) {
+    open class func removeAllBarsFromViewController(_ controller: UIViewController) {
         if let barsForView = GTAlertBar.bars[controller] {
             for bar in barsForView {
-                bar.removeFromParentView(false)
+                (bar as! GTAlertBar).removeFromParentView(false)
             }
         }
     }
 
     /// Remove this bar from its parents view
-    func removeFromParentView(userInitiated: Bool) {
+    func removeFromParentView(_ userInitiated: Bool) {
         var indexOfRemovedBar: Int = 0
         if let barsForView = GTAlertBar.bars[self.parentViewController] {
-            indexOfRemovedBar = barsForView.indexOfObject(self)
-            barsForView.removeObject(self)
+            indexOfRemovedBar = barsForView.index(of: self)
+            barsForView.remove(self)
             if barsForView.count == 0 {
-                GTAlertBar.bars.removeValueForKey(self.parentViewController)
+                GTAlertBar.bars.removeValue(forKey: self.parentViewController)
             }
         }
         self.shiftBarsAfterIndex(indexOfRemovedBar, removedHeight: self.view.frame.size.height)
@@ -221,17 +221,17 @@ public class GTAlertBar: NSObject {
                 self.view.layer.opacity = 0.0
             }
         }) { (Bool) in
-            self.options.callbacks.barDismissed?(bar: self, userDismissed: userInitiated)
+            self.options.callbacks.barDismissed?(self, userInitiated)
             self.view.removeFromSuperview()
         }
     }
 
-    private func addToParentView() {
+    fileprivate func addToParentView() {
         if let barsForView = GTAlertBar.bars[self.parentViewController] {
-            barsForView.addObject(self)
+            barsForView.add(self)
         } else {
             GTAlertBar.bars[self.parentViewController] = NSMutableArray(capacity: 100)
-            GTAlertBar.bars[self.parentViewController]?.addObject(self)
+            GTAlertBar.bars[self.parentViewController]?.add(self)
         }
         var barY: CGFloat = self.view.frame.origin.y
         for bar in GTAlertBar.bars[self.parentViewController]! {
@@ -248,37 +248,37 @@ public class GTAlertBar: NSObject {
                 self.view.layer.opacity = 1.0
             }
             }) { (finished) in
-                self.options.callbacks.barPresented?(bar: self)
+                self.options.callbacks.barPresented?(self)
                 self.view.addGestureRecognizer(UITapGestureRecognizer(target: self,
                     action: #selector(self.userTappedOnBar)))
                 if self.options.dismissAfter != 0.0 {
-                    self.performSelector(#selector(self.removeFromParentView),
-                                         withObject: nil, afterDelay: self.options.dismissAfter)
+                    self.perform(#selector(self.removeFromParentView),
+                                         with: nil, afterDelay: self.options.dismissAfter)
                 }
         }
     }
     
-    @objc private func userTappedOnBar() {
-        self.options.callbacks.userTappedOnBar?(bar: self)
+    @objc fileprivate func userTappedOnBar() {
+        self.options.callbacks.userTappedOnBar?(self)
         if self.options.tapToDismiss {
             self.removeFromParentView(true)
         }
     }
 
-    private func allBarsForViewController() -> NSMutableArray {
+    fileprivate func allBarsForViewController() -> NSMutableArray {
         return GTAlertBar.bars[self.parentViewController]!
     }
 
-    private func animateBlockWithDuration(duration: NSTimeInterval, block: () -> Void, completed: ((Bool) -> Void)?) {
+    fileprivate func animateBlockWithDuration(_ duration: TimeInterval, block: @escaping () -> Void, completed: ((Bool) -> Void)?) {
         if self.options.animation.enabled {
-            UIView.animateWithDuration(duration, animations: block, completion: completed)
+            UIView.animate(withDuration: duration, animations: block, completion: completed)
         } else {
             block()
             completed?(true)
         }
     }
 
-    private func shiftBarsAfterIndex(index: Int, removedHeight: CGFloat) {
+    fileprivate func shiftBarsAfterIndex(_ index: Int, removedHeight: CGFloat) {
         self.animateBlockWithDuration(self.options.animation.duration, block: {
             var i: Int = index
             var bar: GTAlertBar!
@@ -293,8 +293,8 @@ public class GTAlertBar: NSObject {
         }, completed: nil)
     }
 
-    private func statusBarHeight() -> CGFloat {
-        let statusBarSize = UIApplication.sharedApplication().statusBarFrame.size
+    fileprivate func statusBarHeight() -> CGFloat {
+        let statusBarSize = UIApplication.shared.statusBarFrame.size
         return Swift.min(statusBarSize.width, statusBarSize.height)
     }
 }
