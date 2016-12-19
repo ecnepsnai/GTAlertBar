@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = "GTAlertBar"
-    s.version          = "1.0.2"
+    s.version          = "1.0.3"
     s.summary          = "A no-nonsense manager for showing alert bars on iOS apps."
     s.homepage         = "https://github.com/ecnepsnai/GTAlertBar"
 
